@@ -147,11 +147,15 @@ static int authenticate_env_user(request_rec *r)
             result = apr_table_get(r->subprocess_env, user);
         }
 	if (!result) {
+	    // Missing header would log the name of the env var
+	    // - commented out because it is surprising or even a security risk
 	    result = user;
         }
 
 	r->user = (char *) result;
     } else {
+        // With 'AuthEnvUser off' this logs "Env"
+        // - commented out because it is surprising
         r->user = (char *) "Env";
     }
     return OK;
